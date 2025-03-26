@@ -20,10 +20,10 @@ class RobotArmEnv(gym.Env):
         p.setGravity(0,0,-9.81)
 
         #defines agent's action space, shape = 6 for UR5's 6 joints (DOF)
-        self.action_space = spaces.Box(low=-1, high=1, shape=(6,),dtype=np.float32) #agent outputs a 6D action vector of continuous values (between -1&1)  
+        self.action_space = spaces.Box(low=-1, high=1, shape=(6,),dtype=np.float32)   
 
         #defines agent's observation space, shape = 12 for each joint's position & velocity 
-        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(12,), dtype= np.float32) #agent gets a 12D observation vector
+        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(12,), dtype= np.float32) 
 
 
 
@@ -47,7 +47,7 @@ class RobotArmEnv(gym.Env):
         obs = np.array(obs) #new state
         
         #reward
-        target_position = np.array([0.5,0.5,0.5]) #target pos for end effector = last link
+        target_position = np.array([0.5,0.5,0.5]) 
         end_effector_pos = np.array(p.getLinkState(self.robot, 6)[0]) #current pos of end effector 
         reward = -np.linalg.norm(end_effector_pos - target_position) #closer distance -> less negative reward
 
