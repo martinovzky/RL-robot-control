@@ -2,7 +2,7 @@ import gym
 import pybullet as p
 import numpy as np
 import pybullet_data
-from gym import spaces #defines action and observation spaces for RL
+from gym import spaces 
 
 class RobotArmEnv(gym.Env):
 
