@@ -14,7 +14,7 @@ class RobotArmEnv(gym.Env):
 
         #loads robot and plane
         self.plane = p.loadURDF("plane.urdf") #flat plane
-        self.robot = p.loadURDF("ur5.urdf", basePosition = [0,0,0.5]) #Universal Robots's UR5 robotic arm
+        self.robot = p.loadURDF("envs/ur5.urdf", basePosition = [0,0,0.5]) #Universal Robots's UR5 robotic arm
 
         
         p.setGravity(0,0,-9.81)

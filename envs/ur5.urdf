@@ -1,0 +1,112 @@
+<?xml version="1.0" ?>
+<robot name="ur5" xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Simplified UR5 robot for PyBullet (no meshes, minimal visuals) -->
+
+  <!-- Base link -->
+  <link name="base_link">
+    <visual>
+      <geometry>
+        <box size="0.2 0.2 0.1"/>
+      </geometry>
+      <material name="gray">
+        <color rgba="0.5 0.5 0.5 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <!-- 6 joints and links -->
+  <joint name="shoulder_pan_joint" type="revolute">
+    <parent link="base_link"/>
+    <child link="link1"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" lower="-3.14" upper="3.14" velocity="1.0"/>
+  </joint>
+  <link name="link1">
+    <visual>
+      <geometry>
+        <cylinder length="0.2" radius="0.05"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="shoulder_lift_joint" type="revolute">
+    <parent link="link1"/>
+    <child link="link2"/>
+    <origin xyz="0 0 0.2" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="10" lower="-3.14" upper="3.14" velocity="1.0"/>
+  </joint>
+  <link name="link2">
+    <visual>
+      <geometry>
+        <cylinder length="0.2" radius="0.05"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="elbow_joint" type="revolute">
+    <parent link="link2"/>
+    <child link="link3"/>
+    <origin xyz="0 0 0.2" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="10" lower="-3.14" upper="3.14" velocity="1.0"/>
+  </joint>
+  <link name="link3">
+    <visual>
+      <geometry>
+        <cylinder length="0.2" radius="0.05"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="wrist_1_joint" type="revolute">
+    <parent link="link3"/>
+    <child link="link4"/>
+    <origin xyz="0 0 0.2" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" lower="-3.14" upper="3.14" velocity="1.0"/>
+  </joint>
+  <link name="link4">
+    <visual>
+      <geometry>
+        <cylinder length="0.1" radius="0.04"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="wrist_2_joint" type="revolute">
+    <parent link="link4"/>
+    <child link="link5"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <axis xyz="0 1 0"/>
+    <limit effort="10" lower="-3.14" upper="3.14" velocity="1.0"/>
+  </joint>
+  <link name="link5">
+    <visual>
+      <geometry>
+        <cylinder length="0.1" radius="0.03"/>
+      </geometry>
+    </visual>
+  </link>
+
+  <joint name="wrist_3_joint" type="revolute">
+    <parent link="link5"/>
+    <child link="ee_link"/>
+    <origin xyz="0 0 0.1" rpy="0 0 0"/>
+    <axis xyz="0 0 1"/>
+    <limit effort="10" lower="-3.14" upper="3.14" velocity="1.0"/>
+  </joint>
+  <link name="ee_link">
+    <visual>
+      <geometry>
+        <sphere radius="0.03"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0.2 0.2 0.8 1"/>
+      </material>
+    </visual>
+  </link>
+
+</robot>
