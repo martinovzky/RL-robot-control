@@ -8,7 +8,7 @@ This project trains a robotic arm using **Proximal Policy Optimization (PPO)** t
 
 The custom environment is implemented in `envs/robot_arm_env.py`. The agent is trained using Stable-Baselines3 and visualized with TensorBoard.
 
-## ⚙️ Requirements
+##  Requirements
 
 - Python 3.8+
 - `gym`
@@ -22,7 +22,7 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-## How to Train
+##  How to Train
 
 To train the agent:
 
@@ -48,6 +48,6 @@ Make sure `robot_arm_env.py` correctly implements the OpenAI Gym interface:
 - `observation_space`
 - `action_space`
 
-## 🪪 License
+## License
 
 MIT License
