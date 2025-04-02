@@ -14,12 +14,12 @@ class RobotArmEnv(gym.Env):
 
         #loads robot and plane
         self.plane = p.loadURDF("plane.urdf") #flat plane
-        self.robot = p.loadURDF("envs/ur5.urdf", basePosition = [0,0,0.5]) #Universal Robots's UR5 robotic arm
+        self.robot = p.loadURDF("envs/ur5.urdf", basePosition = [0,0,0.05], useFixedBase=True) #Universal Robots's UR5 robotic arm, use fixed base for it not to fall trough the plane ground
 
         
         p.setGravity(0,0,-9.81)
 
-        #defines agent's action space, shape = 6 for UR5's 6 joints (DOF)
+        #defines agent's action space, shape = 6 for UR5's 6 joints (DOF), this vector is totally random.
         self.action_space = spaces.Box(low=-1, high=1, shape=(6,),dtype=np.float32)   
 
         #defines agent's observation space, shape = 12 for each joint's position & velocity 
@@ -48,13 +48,13 @@ class RobotArmEnv(gym.Env):
         
         #reward
         target_position = np.array([0.5,0.5,0.5]) 
-        end_effector_pos = np.array(p.getLinkState(self.robot, 6)[0]) #current pos of end effector 
+        end_effector_pos = np.array(p.getLinkState(self.robot, 5)[0]) #current pos of end effector 
         reward = -np.linalg.norm(end_effector_pos - target_position) #closer distance -> less negative reward
 
         #done bool
         done = -1 * reward < 0.05 #done if end effector is within 5cm of the target
 
-        return done, reward, obs, {} #{} = debug dic
+        return obs, reward, done, {} #{} = debug dic
 
     
     def reset(self):
@@ -62,9 +62,10 @@ class RobotArmEnv(gym.Env):
         """Resets env to initial conditions, needed when agent restarts an episode """
 
         p.resetSimulation()
+        p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.setGravity(0,0,-9.81)
         self.plane = p.loadURDF("plane.urdf") #flat plane
-        self.robot = p.loadURDF("ur5.urdf", basePosition = [0,0,0.5])
+        self.robot = p.loadURDF("envs/ur5.urdf", basePosition = [0,0,0.05], useFixedBase=True)
 
         obs = []
         for i in range(6):
