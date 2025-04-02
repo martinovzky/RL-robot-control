@@ -22,7 +22,7 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-## 🚀 How to Train
+## How to Train
 
 To train the agent:
 
@@ -32,21 +32,14 @@ python main_RL.py
 
 This runs PPO for 10,000 timesteps and saves the model as `ppo_robot_arm.zip`.
 
-## 📊 Monitor Training
 
-Use TensorBoard to visualize training metrics:
-
-```bash
-tensorboard --logdir ./ppo_robot_tensorboard/
-```
-
-## 📌 Notes
+## Notes
 
 - The PPO policy used is `"MlpPolicy"` (multi-layer perceptron).
 - You can increase `total_timesteps` in `main_RL.py` to improve performance.
 - `KMP_DUPLICATE_LIB_OK` is set to avoid library loading issues on some macOS systems.
 
-## 🧩 Custom Environment
+## Custom Environment
 
 Make sure `robot_arm_env.py` correctly implements the OpenAI Gym interface:
 - `reset()`
