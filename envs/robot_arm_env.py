@@ -2,6 +2,7 @@ import gymnasium as gym  # Updated to Gymnasium
 import pybullet as p
 import numpy as np
 import pybullet_data
+import time  # Added missing import
 from gymnasium import spaces  # Updated to Gymnasium
 
 class RobotArmEnv(gym.Env):
@@ -27,18 +28,37 @@ class RobotArmEnv(gym.Env):
 
 
 
-    def step(self, action): #action = 6d action vector
+    def step(self, action):
+        # Convert normalized actions to actual joint positions/velocities
+        MAX_JOINT_CHANGE = 0.05
+        scaled_action = action * MAX_JOINT_CHANGE
         
-        """Apply action, simulate, and return new state, reward, and done bool."""
-
-        #applies action to each joint 
-        for i in range (6):
-            p.setJointMotorControl2(self.robot, i, p.POSITION_CONTROL, targetPosition=action[i])
+        # Get current joint positions
+        current_joint_positions = [p.getJointState(self.robot, i)[0] for i in range(6)]
         
-        #advances sim by one step
-        p.stepSimulation()
+        # Calculate target positions by adding scaled actions
+        target_positions = [current + change for current, change in zip(current_joint_positions, scaled_action)]
+        
+        # Apply the actions using position control
+        for i in range(6):
+            p.setJointMotorControl2(
+                bodyIndex=self.robot,
+                jointIndex=i,
+                controlMode=p.POSITION_CONTROL,
+                targetPosition=target_positions[i],
+                maxVelocity=1.0  # Add velocity limit for stability
+            )
+        
+        # Step the simulation with proper timing
+        for _ in range(10):  # Multiple substeps for stability
+            p.stepSimulation()
+        
+        # Use a more precise sleep method
+        start_time = time.time()
+        while (time.time() - start_time) < (1./240.):
+            pass
 
-        #gets observation of the action
+        # Get new state after action
         obs = []
         for i in range(6):
             joint_info = p.getJointState(self.robot, i)
@@ -46,15 +66,21 @@ class RobotArmEnv(gym.Env):
 
         obs = np.array(obs) #new state
         
-        #reward
+        # Calculate reward based on distance to target
         target_position = np.array([0.5,0.5,0.5]) 
         end_effector_pos = np.array(p.getLinkState(self.robot, 5)[0]) #current pos of end effector 
         reward = -np.linalg.norm(end_effector_pos - target_position) #closer distance -> less negative reward
 
-        #done bool
+        # Check if episode is done
         done = -1 * reward < 0.05 #done if end effector is within 5cm of the target
 
-        return obs, reward, done, {} #{} = debug dic
+        # Additional info for debugging
+        info = {
+            'distance_to_target': np.linalg.norm(end_effector_pos - target_position),
+            'joint_positions': current_joint_positions
+        }
+        
+        return obs, reward, done, info
 
     
     def reset(self, *, seed=None, options=None):  # Updated reset signature for Gymnasium
