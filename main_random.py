@@ -1,7 +1,7 @@
 from envs.robot_arm_env import RobotArmEnv
 import time
 
-#instance of env 
+#creates instance of env 
 env = RobotArmEnv()
 
 #initializes sim
@@ -10,10 +10,10 @@ done = False
 
 #simulates 1000 steps of random interaction with the robot arm environment
 for i in range(1000): 
-    action = env.action_space.sample() #random action 
+    action = env.action_space.sample() #generates random action 
     obs, reward, done, info = env.step(action) #simulates one step
 
-    #print reward occiasonally
+    #prints reward occasionally
     if i % 100 == 0:
         print(f"Step {i}: reward = {reward:.4f}")
 
