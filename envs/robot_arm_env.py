@@ -1,8 +1,8 @@
-import gym
+import gymnasium as gym  # Updated to Gymnasium
 import pybullet as p
 import numpy as np
 import pybullet_data
-from gym import spaces 
+from gymnasium import spaces  # Updated to Gymnasium
 
 class RobotArmEnv(gym.Env):
 
@@ -57,10 +57,10 @@ class RobotArmEnv(gym.Env):
         return obs, reward, done, {} #{} = debug dic
 
     
-    def reset(self):
-
+    def reset(self, *, seed=None, options=None):  # Updated reset signature for Gymnasium
         """Resets env to initial conditions, needed when agent restarts an episode """
 
+        super().reset(seed=seed)  # Call parent reset for seeding
         p.resetSimulation()
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.setGravity(0,0,-9.81)
@@ -72,7 +72,7 @@ class RobotArmEnv(gym.Env):
             joint_info = p.getJointState(self.robot, i)
             obs.extend([joint_info[0], joint_info[1]])  
 
-        return np.array(obs) 
+        return np.array(obs), {}  # Gymnasium requires returning a tuple (obs, info)
     
     def render(self, mode ="human"):
         pass #we already have GUI running, still needed to avoid errors
