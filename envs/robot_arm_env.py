@@ -1,17 +1,23 @@
-import gymnasium as gym  #updates to Gymnasium
+import gymnasium as gym  
 import pybullet as p
 import numpy as np
 import pybullet_data
-import time  #adds missing import
-from gymnasium import spaces  #updates to Gymnasium
+import time  
+from gymnasium import spaces  
 
 class RobotArmEnv(gym.Env):
 
-    def __init__(self):
+    def __init__(self, headless=False):
         super().__init__()
         
-        self.physics_client = p.connect(p.GUI) #stores GUI simulation's ID 
+        # Use DIRECT mode for headless operation, GUI for visualization
+        connection_mode = p.DIRECT if headless else p.GUI
+        self.physics_client = p.connect(connection_mode)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
+
+        # Use simpler physics settings - key fix for DummyVecEnv issue
+        p.setTimeStep(1./60.)
+        p.setPhysicsEngineParameter(numSolverIterations=5)
 
         #loads robot and plane
         self.plane = p.loadURDF("plane.urdf") #flats plane
@@ -23,12 +29,19 @@ class RobotArmEnv(gym.Env):
         self.action_space = spaces.Box(low=-1, high=1, shape=(6,),dtype=np.float32)   
 
         #defines agent's observation space, shape = 12 for each joint's position & velocity 
-        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(12,), dtype= np.float32) 
+        self.observation_space = spaces.Box(low=-np.inf, high=np.inf, shape=(12,), dtype= np.float32)
+        
+        #headless mode parameter
+        self.headless = headless 
+        
+        #few simulation steps to stabilize
+        for _ in range(3):
+            p.stepSimulation()
 
     def step(self, action):
         #converts normalized actions to actual joint positions/velocities
-        MAX_JOINT_CHANGE = 0.05
-        scaled_action = action * MAX_JOINT_CHANGE
+        MAX_JOINT_CHANGE = 0.15
+        scaled_action = action * MAX_JOINT_CHANGE #for stability, limits the change in joint positions to a maximum of 0.15 radians per step
         
         #gets current joint positions
         current_joint_positions = [p.getJointState(self.robot, i)[0] for i in range(6)]
@@ -43,51 +56,58 @@ class RobotArmEnv(gym.Env):
                 jointIndex=i,
                 controlMode=p.POSITION_CONTROL,
                 targetPosition=target_positions[i],
-                maxVelocity=1.0  #adds velocity limit for stability
+                maxVelocity=0.5  #adds velocity limit for stability
             )
         
         #step the simulation with proper timing
-        for _ in range(10):  #multiple substeps for stability
+        for _ in range(5):  #5 physical steps per RL step
             p.stepSimulation()
         
-        #uses a more precise sleep method
-        start_time = time.time()
-        while (time.time() - start_time) < (1./240.):
-            pass
-
+        # Simplified timing - key fix for headless mode
+        time.sleep(1./240.)
+        
         #gets new state after action
         obs = []
         for i in range(6):
             joint_info = p.getJointState(self.robot, i)
             obs.extend([joint_info[0], joint_info[1]]) #pos, vel
 
-        obs = np.array(obs) #new state
+        obs = np.array(obs) #state
         
-        #calculates reward based on distance to target
+        # calculates reward based on distance to target
         target_position = np.array([0.5,0.5,0.5]) 
-        end_effector_pos = np.array(p.getLinkState(self.robot, 5)[0]) #current pos of end effector 
-        reward = -np.linalg.norm(end_effector_pos - target_position) #closer distance -> less negative reward
+        end_effector_pos = np.array(p.getLinkState(self.robot, 5)[0]) #current pos of end effector (link that interacts with environment)
+        reward = -np.linalg.norm(end_effector_pos - target_position) #the closer to the target -> the less negative reward
 
         #checks if episode is done
-        done = -1 * reward < 0.05 #done if end effector is within 5cm of target
+        done = -1 * reward < 0.05  #done if end effector is within 5cm of target
 
-        #additional info for debugging
+        #additional info for debuging
         info = {
             'distance_to_target': np.linalg.norm(end_effector_pos - target_position),
             'joint_positions': current_joint_positions
         }
         
-        return obs, reward, done, info
+        return obs, reward, done, False, info
 
-    def reset(self, *, seed=None, options=None):  #updates reset signature for Gymnasium
+    def reset(self, *, seed=None, options=None):
         """resets env to initial conditions, needs when agent restarts an episode """
 
         super().reset(seed=seed)  #calls parent reset for seeding
-        p.resetSimulation()
+        p.resetSimulation()  #resets the simulation
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.setGravity(0,0,-9.81)
+        
+        # Set physics parameters again
+        p.setTimeStep(1./60.)
+        p.setPhysicsEngineParameter(numSolverIterations=5)
+        
         self.plane = p.loadURDF("plane.urdf") #flat plane
         self.robot = p.loadURDF("envs/ur5.urdf", basePosition = [0,0,0.05], useFixedBase=True)
+        
+        # Critical fix: stabilize after reset
+        for _ in range(3):
+            p.stepSimulation()
 
         obs = []
         for i in range(6):
@@ -100,6 +120,7 @@ class RobotArmEnv(gym.Env):
         pass #we already have GUI running, still needed to avoid errors
 
     def close(self):
-        p.disconnect()
+        if p.isConnected(self.physics_client):
+            p.disconnect(self.physics_client)
 
 

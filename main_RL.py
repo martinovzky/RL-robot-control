@@ -14,8 +14,8 @@ from stable_baselines3 import PPO
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-#defines training parameters
-TOTAL_TIMESTEPS = 10_000  #number of timesteps for training
+#training parameters
+TOTAL_TIMESTEPS = 10_000  # #RL timesteps for entire training
 TENSORBOARD_LOG_DIR = "./ppo_robot_tensorboard/"  #directory for TensorBoard logs (uses 'tensorboard --logdir=./ppo_robot_tensorboard' to view)
 MODEL_SAVE_PATH = "ppo_robot_arm"  #path to save the trained model
 
@@ -36,8 +36,8 @@ def main():
             tensorboard_log=TENSORBOARD_LOG_DIR,  #where to save training metrics
             device="auto",               #uses GPU if available, otherwise CPU
             #hyperparameters for training stability:
-            learning_rate=3e-4,          #step size for optimization (Adam optimizer)
-            n_steps=2048,               #number of steps to run for each environment per update
+            learning_rate=3e-4,         #step size for optimization (Adam optimizer)
+            n_steps=2048,               #number of interaction the RL agent has with the environment before updating the policy
             batch_size=64,              #minibatch size for training
             n_epochs=10,                #number of epochs when optimizing the surrogate loss
             gamma=0.99,                 #discount factor for future rewards
@@ -45,21 +45,19 @@ def main():
             clip_range=0.2              #clipping parameter for PPO loss
         )
 
-        logger.info("Starting training...")
-        #trains the agent and saves metrics to tensorboard
+        logger.info("Training strart")
+        
         model.learn(
-            total_timesteps=TOTAL_TIMESTEPS,  #total number of interaction steps
-            progress_bar=True                 #show progress during training
+            total_timesteps=TOTAL_TIMESTEPS,  
+            progress_bar=True                 
         )
 
-        logger.info("Training completed. Saving model...")
-        #save the trained model for later use
+        logger.info("Training ended")
         model.save(MODEL_SAVE_PATH)
-        logger.info("Model saved successfully.")
+        logger.info("Model saved")
 
     except Exception as e:
-        #logs any errors that occur during training
-        logger.error(f"An error occurred: {e}")
+        logger.error(f"Error: {e}")
         raise
 
     finally:
