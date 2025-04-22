@@ -137,8 +137,6 @@ def main():
         print(f"Training for {TOTAL_TIMESTEPS} timesteps...")
         sys.stdout.flush()
 
-
-
         
         #main training
         model.learn(
