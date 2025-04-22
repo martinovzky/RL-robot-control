@@ -136,7 +136,7 @@ s    <inertial>
     </inertial>
     <visual>
       <geometry>
-        <sphere radius="0.03"/>
+        <sphere radius="0.03"/>  #sphere as end effector
       </geometry>
       <material name="blue">
         <color rgba="0.2 0.2 0.8 1"/>

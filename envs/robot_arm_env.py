@@ -74,7 +74,7 @@ class RobotArmEnv(gym.Env):
 
         obs = np.array(obs) #state
         
-        # calculates reward based on distance to target
+        #calculates reward based on distance to target
         target_position = np.array([0.5,0.5,0.5]) 
         end_effector_pos = np.array(p.getLinkState(self.robot, 5)[0]) #current pos of end effector (link that interacts with environment)
         reward = -np.linalg.norm(end_effector_pos - target_position) #the closer to the target -> the less negative reward
