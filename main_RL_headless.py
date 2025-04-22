@@ -63,7 +63,7 @@ def create_callback(screenshot_dir):
         #saves model every 25k step
         if timesteps % 25000 == 0:
             model = _locals['self']
-            model.save(MODEL_SAVE_PATH)  s
+            model.save(MODEL_SAVE_PATH)  
             print(f"Model saved at step {timesteps}")
             
         return True
@@ -113,7 +113,7 @@ def main():
                 verbose=1, #logs metrics
                 tensorboard_log=TENSORBOARD_LOG_DIR,
                 policy_kwargs={
-                    "net_arch": [dict(pi=[512, 512, 256], vf=[512, 512, 256])],  # deeper/wider net
+                    "net_arch": dict(pi=[512, 512, 256], vf=[512, 512, 256]),  # deeper/wider net, must be a dic and not a list of dic with SB3 update
                     "activation_fn": torch.nn.ReLU  # use ReLU for non-linearity
                 }, 
                 device="cuda",  
