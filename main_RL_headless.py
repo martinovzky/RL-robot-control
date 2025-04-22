@@ -45,7 +45,7 @@ def create_callback(screenshot_dir):
         nonlocal last_timesteps
         timesteps = _locals['self'].num_timesteps #current training step 
         
-        # Take screenshot every 25k steps
+        #takes screenshot every 25k steps
         if timesteps % 25000 == 0 and timesteps > 0:
             screenshot_path = os.path.join(
                 screenshot_dir,
@@ -54,16 +54,16 @@ def create_callback(screenshot_dir):
             save_pybullet_screenshot(screenshot_path)
             print(f"Screenshot saved at step {timesteps}")
             
-        # Print progress every 100k steps
+        #prints progress every 100k steps
         if timesteps - last_timesteps >= 100000:
             last_timesteps = timesteps
             print(f"Progress: {timesteps}/{TOTAL_TIMESTEPS} steps ({timesteps/TOTAL_TIMESTEPS*100:.1f}%)")
             sys.stdout.flush()
 
-        
+        #saves model every 25k step
         if timesteps % 25000 == 0:
             model = _locals['self']
-            model.save(MODEL_SAVE_PATH)  #saves model every 25k steps
+            model.save(MODEL_SAVE_PATH)  s
             print(f"Model saved at step {timesteps}")
             
         return True
@@ -94,30 +94,39 @@ def main():
         #creates a progress callback (closure: inner function that retains access to outer vars like last_timesteps and screenshot_dir)
         progress_callback = create_callback(screenshot_dir)
         
-        print("Step 3: Creating model for training")
-        sys.stdout.flush()
+
+         #if azure evicts me from training run, use saved model as resuming point
+        if os.path.exists(f"{MODEL_SAVE_PATH}.zip"):
+            print("Loading existing model...")
+            sys.stdout.flush()
+            model = PPO.load(MODEL_SAVE_PATH, env=env)
+
+        else:
         
-        #main training model with full hyperparams
-        model = PPO(
-            policy="MlpPolicy",
-            env=env,
-            verbose=1, #logs metrics
-            tensorboard_log=TENSORBOARD_LOG_DIR,
-            policy_kwargs={
-                "net_arch": [dict(pi=[512, 512, 256], vf=[512, 512, 256])],  # deeper/wider net
-                "activation_fn": torch.nn.ReLU  # use ReLU for non-linearity
-            }, 
-            device="cuda",  
-            learning_rate=1e-4,  #lower for stability
-            n_steps=16384,       #larger rollout buffer
-            batch_size=4096,     #larger batch for GPU
-            n_epochs=20,         #epochs per update
-            gamma=0.995,         #discount factor
-            gae_lambda=0.97,     
-            clip_range=0.15,     
-            ent_coef=0.01,       #encourages exploration
-            normalize_advantage=True  #stabilizes learning
-        )
+            print("Step 3: Creating model for training")
+            sys.stdout.flush()
+
+            #main training model with full hyperparams
+            model = PPO(
+                policy="MlpPolicy",
+                env=env,
+                verbose=1, #logs metrics
+                tensorboard_log=TENSORBOARD_LOG_DIR,
+                policy_kwargs={
+                    "net_arch": [dict(pi=[512, 512, 256], vf=[512, 512, 256])],  # deeper/wider net
+                    "activation_fn": torch.nn.ReLU  # use ReLU for non-linearity
+                }, 
+                device="cuda",  
+                learning_rate=1e-4,  #lower for stability
+                n_steps=16384,       #larger rollout buffer
+                batch_size=4096,     #larger batch for GPU
+                n_epochs=20,         #epochs per update
+                gamma=0.995,         #discount factor
+                gae_lambda=0.97,     
+                clip_range=0.15,     
+                ent_coef=0.01,       #encourages exploration
+                normalize_advantage=True  #stabilizes learning
+            )
         
         print("TensorBoard: To monitor training, run the following command in your terminal:")
         print(f"tensorboard --logdir {TENSORBOARD_LOG_DIR}")
@@ -129,10 +138,6 @@ def main():
         sys.stdout.flush()
 
 
-        if os.path.exists(f"{MODEL_SAVE_PATH}.zip"):
-            print("Loading existing model...") #in case of resuming training if azure evicts my VM
-            sys.stdout.flush()
-            model = PPO.load(MODEL_SAVE_PATH, env=env)
 
         
         #main training
