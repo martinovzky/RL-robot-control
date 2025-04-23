@@ -4,3 +4,4 @@ torch
 numpy
 tensorboard
 pybullet
+PIL
