@@ -35,10 +35,10 @@ pip install -r requirements.txt
 
 ## How to Train
 
-To train the agent:
+To train the agent (in headless mode):
 
 ```bash
-python main_RL.py
+python main_RL_headless.py
 ```
 
 This will:
@@ -54,10 +54,9 @@ tensorboard --logdir=ppo_robot_tensorboard/
 
 ## Custom Environment
 
-The custom environment (`robot_arm_env.py`) simulates the UR5 robotic arm and adheres to the Gymnasium interface. It includes:
+The custom environment (`robot_arm_env.py`) simulates the UR5 robotic arm for the Gymnasium interface. It includes:
 - **`reset()`**: Resets the environment to its initial state.
 - **`step(action)`**: Applies an action, advances the simulation, and returns the new state, reward, and done flag.
-- **`render()`**: (Optional) Renders the environment (PyBullet GUI is already enabled).
 - **`observation_space`**: Defines the state space (joint positions and velocities).
 - **`action_space`**: Defines the action space (joint target positions).
 
@@ -73,13 +72,14 @@ The episode ends when the end effector is within **5 cm** of the target position
 - You can adjust `TOTAL_TIMESTEPS` in [`main_RL.py`](main_RL.py) to train the agent for a longer duration.
 - The environment uses PyBullet for physics simulation, and inertial data has been added to the URDF file for stability.
 - `KMP_DUPLICATE_LIB_OK` is set to avoid library loading issues on macOS systems.
+- A PyBullet-GUI version (`main_RL.py`) is included in the run_scripts folder but isn't fully developped.
 
 ## Future Improvements
 
 - Add support for more complex tasks, such as obstacle avoidance or trajectory following.
 - Implement curriculum learning to gradually increase task difficulty.
-- Extend the environment to support continuous control with torque-based actions.
+- Finish the GU version.
 
 ## License
 
-This project is licensed under the **MIT License**.
+**MIT License**.
