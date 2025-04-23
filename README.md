@@ -8,7 +8,7 @@ This project demonstrates how to train a robotic arm to perform goal-directed ta
 the custom environment (`envs/robot_arm_env.py`) is built to simulate the UR5 robotic arm, that has for goal to leanr how to move its end effector to a target position. 
 
 
-The goal of this project was learning how to build basic robotics simulation environments, learning how to implement RL pipelines using broadly used RL algorithms and get familiar with the training mechanism of an RL model. 
+The goal of this project was to build a basic robotic simulation environment, learn how to implement RL pipelines using broadly used RL algorithms and get familiar with the training mechanism of an RL model. 
 
 ## Features
 
@@ -25,6 +25,7 @@ The goal of this project was learning how to build basic robotics simulation env
 - `torch`
 - `stable-baselines3`
 - `pybullet`
+- PIL
 
 Install dependencies:
 
@@ -42,7 +43,7 @@ python main_RL.py
 
 This will:
 1. Initialize the custom robotic arm environment.
-2. Train the PPO agent for **10,000 timesteps**.
+2. Train the PPO agent for **2,500,000 timesteps**. (Much more efficient with accelerated compute)
 3. Save the trained model as `ppo_robot_arm.zip`.
 
 You can monitor the training process using TensorBoard:
