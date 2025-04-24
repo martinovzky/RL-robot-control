@@ -91,17 +91,25 @@ These images show the robot arm’s learning progress at different training stag
 
 ### Metrics
 
-- **Value Loss**  
+- **Value Loss**
+  Started very high (around 40) and rapidly declined to small value (< 0.1) for the rest of the training.
+  Shows that the agent converged to a strategy to reach the target position. This can be seen in the screenshots at different time steps, where the robot ends up by reaching the     red cross consistently. 
+
   ![Value Loss](TrainRun_v2_metrics/value_loss.png)
 
-- **Entropy Loss**  
-  ![Entropy Loss](TrainRun_v2_metrics/entropy_loss.png)
-
-- **Explained Variance**  
+- **Explained Variance**
+  The explained_variance started high (~0.97), indicating that early on, the agent's return (cumulative reward onwards) predictions closely tracked the actual return.
+  Over time,  it gradually declined and   became negative. In this context, where the robot consistently succeeds in reaching the target, the return become nearly constant across episodes.
+  As a result, there is little variability left for the value network to explain, explaining the drop in explained_variance.
   ![Explained Variance](TrainRun_v2_metrics/explained_variance.png)
 
+- **Entropy Loss**
+  Entropy loss being the negative of entropy, it measures how random a policy is. The less negative, the more derministic the policy. During training entropy_loss gradually increased from –8.65 to –7.73, shows that the agent moved from broad exploration toward confident, consistent action selection.
+  ![Entropy Loss](TrainRun_v2_metrics/entropy_loss.png)
+
 - **Approximate KL**  
-  ![Approximate KL](TrainRun_v2_metrics/approx_kl.png)
+  Stayed below 0.01 all along, indicates stable training.  
+  <img src="TrainRun_v2_metrics/approx_kl.png" width="400"/>
 
 ## Future Improvements
 
