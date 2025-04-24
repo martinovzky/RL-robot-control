@@ -77,7 +77,7 @@ The episode ends when the end effector is within **5 cm** of the target position
   Shows that the agent converged to a strategy to reach the target position.  
   <img src="TrainRun_v2_metrics/value_loss.png" width="620"/>
 
-  This is reflected in the screenshots below — the robot consistently reaches the red cross:
+  This is reflected in the screenshots below — from the middle of the training onwards, the robot consistently reaches the red cross:
 
   <div style="display: flex; gap: 10px; justify-content: center;">
     <div style="text-align: center;">
