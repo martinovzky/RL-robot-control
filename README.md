@@ -66,13 +66,6 @@ The reward is based on the distance between the end effector and the target posi
 ### Done Condition
 The episode ends when the end effector is within **5 cm** of the target position.
 
-## Notes
-
-- The PPO policy used is `"MlpPolicy"` (multi-layer perceptron).
-- You can adjust `TOTAL_TIMESTEPS` in [`main_RL.py`](main_RL.py) to train the agent for a longer duration.
-- The environment uses PyBullet for physics simulation, and inertial data has been added to the URDF file for stability.
-- `KMP_DUPLICATE_LIB_OK` is set to avoid library loading issues on macOS systems.
-- A PyBullet-GUI version (`main_RL.py`) is included in the run_scripts folder but isn't fully developped.
 
 ## Results
 
@@ -117,6 +110,15 @@ The episode ends when the end effector is within **5 cm** of the target position
 - **Approximate KL**  
   Stayed below 0.01 all along, indicates stable training.  
   <img src="TrainRun_v2_metrics/approx_kl.png" width="620"/>
+
+  ## Notes
+
+- The PPO policy used is `"MlpPolicy"` (multi-layer perceptron).
+- You can adjust `TOTAL_TIMESTEPS` in [`main_RL.py`](main_RL.py) to train the agent for a longer duration.
+- The environment uses PyBullet for physics simulation, and inertial data has been added to the URDF file for stability.
+- `KMP_DUPLICATE_LIB_OK` is set to avoid library loading issues on macOS systems.
+- A PyBullet-GUI version (`main_RL.py`) is included in the run_scripts folder but isn't fully developped.
+
 
 ## Future Improvements
 
