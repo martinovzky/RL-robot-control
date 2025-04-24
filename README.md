@@ -25,7 +25,7 @@ The goal of this project was to build a basic robotic simulation environment, le
 - `torch`
 - `stable-baselines3`
 - `pybullet`
-- PIL
+
 
 Install dependencies:
 
