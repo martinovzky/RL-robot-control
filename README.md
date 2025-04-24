@@ -81,10 +81,10 @@ The episode ends when the end effector is within **5 cm** of the target position
 These images show the robot arm’s learning progress at different training stages:
 
 - **Step 300,000**  
-  ![Step 300,000](TrainRun_v2_Screenshots/Step_300000.png)
+  ![Step 300,000](TrainRun_v2_Screenshots/Step_300,000.png)
 
 - **Step 750,000**  
-  ![Step 750,000](TrainRun_v2_Screenshots/Step_750000.png)
+  ![Step 750,000](TrainRun_v2_Screenshots/Step_750,000.png)
 
 - **Step 1,600,000**  
   ![Step 1,600,000](TrainRun_v2_Screenshots/Step_1,600,000.png)
