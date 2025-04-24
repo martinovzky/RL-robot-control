@@ -76,7 +76,7 @@ The episode ends when the end effector is within **5 cm** of the target position
 
 ## Future Improvements
 
-- Add support for more complex tasks, such as obstacle avoidance or trajectory following.
+- Add support for more complex tasks like obstacle avoidance or trajectory following.
 - Implement curriculum learning to gradually increase task difficulty.
 - Finish the GU version.
 
