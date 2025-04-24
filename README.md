@@ -79,19 +79,22 @@ The episode ends when the end effector is within **5 cm** of the target position
 
   This is reflected in the screenshots below — from the middle of the training onwards, the robot consistently reaches the red cross:
 
-  <div style="display: flex; gap: 10px; justify-content: center;">
-    <div style="text-align: center;">
+<table>
+  <tr>
+    <td align="center">
       <img src="TrainRun_v2_Screenshots/Step_300,000.png" width="400"/><br/>
       <small>Step 300,000</small>
-    </div>
-    <div style="text-align: center;">
+    </td>
+    <td align="center">
       <img src="TrainRun_v2_Screenshots/Step_750,000.png" width="400"/><br/>
       <small>Step 750,000</small>
-    </div>
-    <div style="text-align: center;">
+    </td>
+    <td align="center">
       <img src="TrainRun_v2_Screenshots/Step_1600000.png" width="400"/><br/>
       <small>Step 1,600,000</small>
-  </div>
+    </td>
+  </tr>
+</table>
 
   
 - **Explained Variance**  
