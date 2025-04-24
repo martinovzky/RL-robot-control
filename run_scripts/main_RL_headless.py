@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 #hyperparameters
-TOTAL_TIMESTEPS = 2000000  
+TOTAL_TIMESTEPS = 2500000  
 TENSORBOARD_LOG_DIR = "./ppo_robot_tensorboard_headless/"  
 MODEL_SAVE_PATH = "ppo_robot_arm_headless"  
 
@@ -60,8 +60,8 @@ def create_callback(screenshot_dir):
             print(f"Progress: {timesteps}/{TOTAL_TIMESTEPS} steps ({timesteps/TOTAL_TIMESTEPS*100:.1f}%)")
             sys.stdout.flush()
 
-        #saves model every 25k step
-        if timesteps % 25000 == 0:
+        #saves model every 50k step
+        if timesteps % 50000 == 0:
             model = _locals['self']
             model.save(MODEL_SAVE_PATH)  
             print(f"Model saved at step {timesteps}")
