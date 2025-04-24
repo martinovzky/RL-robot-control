@@ -89,7 +89,7 @@ The episode ends when the end effector is within **5 cm** of the target position
       <small>Step 750,000</small>
     </div>
     <div style="text-align: center;">
-      <img src="TrainRun_v2_Screenshots/Step_1,600,000.png" width="400"/><br/>
+      <img src="TrainRun_v2_Screenshots/Step_1600000.png" width="400"/><br/>
       <small>Step 1,600,000</small>
     </div>
   </div>
