@@ -74,12 +74,43 @@ The episode ends when the end effector is within **5 cm** of the target position
 - `KMP_DUPLICATE_LIB_OK` is set to avoid library loading issues on macOS systems.
 - A PyBullet-GUI version (`main_RL.py`) is included in the run_scripts folder but isn't fully developped.
 
+## Results
+## Results
+
+### Training Progress Snapshots
+These images show the robot arm’s learning progress at different training stages:
+
+- **Step 300,000**  
+  ![Step 300,000](TrainRun_v2_Screenshots/Step_300000.png)
+
+- **Step 750,000**  
+  ![Step 750,000](TrainRun_v2_Screenshots/Step_750000.png)
+
+- **Step 1,600,000**  
+  ![Step 1,600,000](TrainRun_v2_Screenshots/Step_1,600,000.png)
+
+### Metrics
+
+- **Value Loss**  
+  ![Value Loss](TrainRun_v2_metrics/value_loss.png)
+
+- **Entropy Loss**  
+  ![Entropy Loss](TrainRun_v2_metrics/entropy_loss.png)
+
+- **Explained Variance**  
+  ![Explained Variance](TrainRun_v2_metrics/explained_variance.png)
+
+- **Approximate KL**  
+  ![Approximate KL](TrainRun_v2_metrics/approx_kl.png)
+
 ## Future Improvements
 
 - Add support for more complex tasks like obstacle avoidance or trajectory following.
 - Implement curriculum learning to gradually increase task difficulty.
-- Finish the GU version.
+- Finish the GUI version.
+- Implement vectorized training, I tried and it caused persistent errors.
 
 ## License
+
 
 **MIT License**.
