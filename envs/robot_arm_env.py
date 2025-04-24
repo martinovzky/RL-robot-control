@@ -10,12 +10,12 @@ class RobotArmEnv(gym.Env):
     def __init__(self, headless=False):
         super().__init__()
         
-        # Use DIRECT mode for headless operation, GUI for visualization
+        #DIRECT mode for headless operation, GUI for visualization
         connection_mode = p.DIRECT if headless else p.GUI
         self.physics_client = p.connect(connection_mode)
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
 
-        # Use simpler physics settings - key fix for DummyVecEnv issue
+        #simpler physics settings - key fix for DummyVecEnv issue
         p.setTimeStep(1./60.)
         p.setPhysicsEngineParameter(numSolverIterations=5)
 
@@ -98,14 +98,27 @@ class RobotArmEnv(gym.Env):
         p.setAdditionalSearchPath(pybullet_data.getDataPath())
         p.setGravity(0,0,-9.81)
         
-        # Set physics parameters again
+        #sets physics parameters again
         p.setTimeStep(1./60.)
         p.setPhysicsEngineParameter(numSolverIterations=5)
         
         self.plane = p.loadURDF("plane.urdf") #flat plane
         self.robot = p.loadURDF("envs/ur5.urdf", basePosition = [0,0,0.05], useFixedBase=True)
         
-        # Critical fix: stabilize after reset
+        #adds red sphere as target visualization
+        self.target_position = np.array([0.5, 0.5, 0.5])
+        visual_id = p.createVisualShape(
+            shapeType=p.GEOM_SPHERE,
+            radius=0.025,
+            rgbaColor=[1, 0, 0, 0.7],  #red, semi-transparent
+        )
+        self.target_marker = p.createMultiBody(
+            baseMass=0,  #static object
+            basePosition=self.target_position,
+            baseOrientation=[0, 0, 0, 1],
+            baseVisualShapeIndex=visual_id,
+        )
+        
         for _ in range(3):
             p.stepSimulation()
 
