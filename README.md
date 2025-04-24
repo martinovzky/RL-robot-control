@@ -75,18 +75,6 @@ The episode ends when the end effector is within **5 cm** of the target position
 - A PyBullet-GUI version (`main_RL.py`) is included in the run_scripts folder but isn't fully developped.
 
 ## Results
-## Results
-
-### Training Progress Snapshots
-
-- **Step 300,000**  
-  ![Step 300,000](TrainRun_v2_Screenshots/Step_300,000.png)
-
-- **Step 750,000**  
-  ![Step 750,000](TrainRun_v2_Screenshots/Step_750,000.png)
-
-- **Step 1,600,000**  
-  ![Step 1,600,000](TrainRun_v2_Screenshots/Step_1,600,000.png)
 
 ### Metrics
 
@@ -94,43 +82,41 @@ The episode ends when the end effector is within **5 cm** of the target position
 - **Value Loss**  
   Started very high (around 40) and rapidly declined to small value (< 0.1) for the rest of the training.  
   Shows that the agent converged to a strategy to reach the target position.  
-  This can be seen in the screenshots below — the robot consistently reaches the red cross:
+  <img src="TrainRun_v2_metrics/value_loss.png" width="620"/>
+
+  This is reflected in the screenshots below — the robot consistently reaches the red cross:
 
   <div style="display: flex; gap: 10px; justify-content: center;">
     <div style="text-align: center;">
-      <img src="TrainRun_v2_Screenshots/Step_300,000.png" width="450"/><br/>
+      <img src="TrainRun_v2_Screenshots/Step_300,000.png" width="400"/><br/>
       <small>Step 300,000</small>
     </div>
     <div style="text-align: center;">
-      <img src="TrainRun_v2_Screenshots/Step_750,000.png" width="450"/><br/>
+      <img src="TrainRun_v2_Screenshots/Step_750,000.png" width="400"/><br/>
       <small>Step 750,000</small>
     </div>
     <div style="text-align: center;">
-      <img src="TrainRun_v2_Screenshots/Step_1,600,000.png" width="450"/><br/>
+      <img src="TrainRun_v2_Screenshots/Step_1,600,000.png" width="400"/><br/>
       <small>Step 1,600,000</small>
     </div>
   </div>
-
-  <br/>
-
-  <img src="TrainRun_v2_metrics/value_loss.png" width="700"/>
 
   
 - **Explained Variance**  
   The explained_variance started high (~0.97), indicating that early on, the agent's return (cumulative reward onwards) predictions closely tracked the actual return.  
   Over time, it gradually declined and became negative. In this context, where the robot consistently succeeds in reaching the target, the return becomes nearly constant across episodes.  
   As a result, there is little variability left for the value network to explain, explaining the drop in explained_variance.  
-  <img src="TrainRun_v2_metrics/explained_variance.png" width="700"/>
+  <img src="TrainRun_v2_metrics/explained_variance.png" width="620"/>
 
 - **Entropy Loss**  
   Entropy loss being the negative of entropy, it measures how random a policy is.  
   The less negative, the more deterministic the policy.  
   During training, entropy_loss gradually increased from –8.65 to –7.73, showing that the agent moved from broad exploration toward confident, consistent action selection.  
-  <img src="TrainRun_v2_metrics/entropy_loss.png" width="700"/>
+  <img src="TrainRun_v2_metrics/entropy_loss.png" width="620"/>
 
 - **Approximate KL**  
   Stayed below 0.01 all along, indicates stable training.  
-  <img src="TrainRun_v2_metrics/approx_kl.png" width="700"/>
+  <img src="TrainRun_v2_metrics/approx_kl.png" width="620"/>
 
 ## Future Improvements
 
