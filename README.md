@@ -84,7 +84,7 @@ These images show the robot arm’s learning progress at different training stag
   ![Step 300,000](TrainRun_v2_Screenshots/Step_300,000.png)
 
 - **Step 750,000**  
-  ![Step 750,000](TrainRun_v2_Screenshots/Step_750,000.png)
+  ![Step 750,000](TrainRun_v2_Screenshots/Step_750,000.png,width="400")
 
 - **Step 1,600,000**  
   ![Step 1,600,000](TrainRun_v2_Screenshots/Step_1,600,000.png)
