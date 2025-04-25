@@ -4,7 +4,7 @@ RL project to control a simulated robotic arm using Stable-Baselines3 and a cust
 
 ## Overview
 
-This project demonstrates how to train a robotic arm to perform goal-directed tasks in a simulated environment using **Proximal Policy Optimization (PPO)**. The robotic arm is simulated using PyBullet,
+This project demonstrates how to train a robotic arm to perform a goal-directed task in a simulated environment using **Proximal Policy Optimization (PPO)**. The robotic arm is simulated using PyBullet,
 the custom environment (`envs/robot_arm_env.py`) is built to simulate the UR5 robotic arm, that has for goal to leanr how to move its end effector to a target position. 
 
 
