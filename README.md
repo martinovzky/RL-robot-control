@@ -17,40 +17,6 @@ The goal of this project was to build a basic robotic simulation environment, le
 - **Simulation**: Powered by PyBullet for realistic physics-based simulation.
 - **Visualization**: Training metrics are logged to TensorBoard for real-time monitoring.
 
-## Requirements
-
-- Python 3.8+
-- `gymnasium`
-- `numpy`
-- `torch`
-- `stable-baselines3`
-- `pybullet`
-
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-## How to Train
-
-To train the agent (in headless mode):
-
-```bash
-python main_RL_headless.py
-```
-
-This will:
-1. Initialize the custom robotic arm environment.
-2. Train the PPO agent for **2,500,000 timesteps**. (Much more efficient with accelerated compute)
-3. Save the trained model as `ppo_robot_arm.zip`.
-
-You can monitor the training process using TensorBoard:
-
-```bash
-tensorboard --logdir=ppo_robot_tensorboard/
-```
 
 ## Custom Environment
 
@@ -112,6 +78,42 @@ The episode ends when the end effector is within **5 cm** of the target position
 - **Approximate KL**  
   Stayed below 0.01 all along, indicates stable training.  
   <img src="TrainRun_v2_metrics/approx_kl.png" width="620"/>
+
+  ## Requirements
+
+- Python 3.8+
+- `gymnasium`
+- `numpy`
+- `torch`
+- `stable-baselines3`
+- `pybullet`
+
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+## How to Train
+
+To train the agent (in headless mode):
+
+```bash
+python main_RL_headless.py
+```
+
+This will:
+1. Initialize the custom robotic arm environment.
+2. Train the PPO agent for **2,500,000 timesteps**. (Much more efficient with accelerated compute)
+3. Save the trained model as `ppo_robot_arm.zip`.
+
+You can monitor the training process using TensorBoard:
+
+```bash
+tensorboard --logdir=ppo_robot_tensorboard/
+```
+
 
   ## Notes
 
